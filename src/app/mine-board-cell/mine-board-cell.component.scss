@@ -1,0 +1,14 @@
+.mine-board-cell {
+  aspect-ratio: 1;
+  background-color: red;
+  margin: 0.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mat-icon{
+    width: 100%;
+    height: fit-content;
+    font-size: 10vw;
+    text-align: center;
+  }
+}

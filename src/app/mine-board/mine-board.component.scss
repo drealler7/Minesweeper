@@ -1,0 +1,9 @@
+.mine-board-rows{
+  .mine-board-row{
+    display: flex;
+    .mine-board-col{
+      flex-grow: 1;
+    }
+}
+
+}
