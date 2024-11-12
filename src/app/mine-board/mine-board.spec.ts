@@ -28,7 +28,7 @@ describe('MineBoard', () => {
       y = Math.floor(Math.random() * options.gridSize.cols);
     const cell = board.grid[x][y];
 
-    board.open(x, y);
+    board.open(cell);
 
     expect(cell.isMine).toBeFalse();
     expect(cell.isMarked).toBeFalse();
@@ -38,9 +38,10 @@ describe('MineBoard', () => {
   it('should Initials mines', () => {
     const x = Math.floor(Math.random() * options.gridSize.rows),
       y = Math.floor(Math.random() * options.gridSize.cols);
+    const cell = board.grid[x][y];
     const HasMineBeforeOpen = board.grid.some((_) => _.some((__) => __.isMine));
 
-    board.open(x, y);
+    board.open(cell);
 
     const HasMineAfterOpen = board.grid.some((_) => _.some((__) => __.isMine));
 

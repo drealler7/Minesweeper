@@ -1,7 +1,14 @@
-<div class="mine-board-rows">
-  <div class="mine-board-row" *ngFor="let cells of mineBoard.grid">
-    <div class="mine-board-col" *ngFor="let cell of cells">
-      <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell"/>
-    </div>
-  </div>
-</div>
+<table>
+  <thead>
+    <tr>
+      <th colspan="5">Timer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cells of mineBoard.grid">
+      <td *ngFor="let cell of cells">
+        <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell" />
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -8,13 +8,11 @@ export type MineBoardOptions = {
 export class MineBoard {
   private minesInitialized?: boolean;
   grid: MineBoardCell[][];
-  constructor(private options: MineBoardOptions) {
+  constructor(private readonly options: MineBoardOptions) {
     this.grid = MineBoard.generateGrid(options);
   }
 
-  open(x: number, y: number) {
-    const cell = this.grid[x][y];
-
+  open(cell: MineBoardCell) {
     this.minesInitialized ??= this.initializeMineCells(cell);
 
     cell.isOpen = true;
