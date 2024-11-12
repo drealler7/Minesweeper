@@ -6,7 +6,7 @@ describe('MineBoard', () => {
     gridSize: { rows: 10, cols: 10 },
   };
   let board = new MineBoard(options);
-  beforeEach(()=>{
+  beforeEach(() => {
     board = new MineBoard(options);
   })
 
@@ -31,7 +31,7 @@ describe('MineBoard', () => {
     board.open(cell);
 
     expect(cell.isMine).toBeFalse();
-    expect(cell.isMarked).toBeFalse();
+    expect(cell.isFlagged).toBeFalse();
     expect(cell.isOpen).toBeTrue();
   });
 
@@ -48,4 +48,51 @@ describe('MineBoard', () => {
     expect(HasMineBeforeOpen).toBeFalse();
     expect(HasMineAfterOpen).toBeTrue();
   });
+
+  it('should toggle cell flag to flagged', () => {
+    const x = Math.floor(Math.random() * options.gridSize.rows),
+      y = Math.floor(Math.random() * options.gridSize.cols);
+    const cell = board.grid[x][y];
+
+    board.toggleFlag(cell);
+
+    expect(cell.isFlagged).toBeTrue();
+  });
+
+  it('should toggle cell flag to not flagged', () => {
+    const x = Math.floor(Math.random() * options.gridSize.rows),
+      y = Math.floor(Math.random() * options.gridSize.cols);
+    const cell = board.grid[x][y];
+
+    board.toggleFlag(cell);
+    board.toggleFlag(cell);
+
+    expect(cell.isFlagged).toBeFalse();
+  });
+
+  it('should not open flagged cell', () => {
+    const x = Math.floor(Math.random() * options.gridSize.rows),
+      y = Math.floor(Math.random() * options.gridSize.cols);
+    const cell = board.grid[x][y];
+
+    board.toggleFlag(cell);
+    board.open(cell);
+
+
+    expect(cell.isFlagged).toBeTrue();
+    expect(cell.isOpen).toBeFalse();
+  });
+  it('should not toggle flag of open cell', () => {
+    const x = Math.floor(Math.random() * options.gridSize.rows),
+      y = Math.floor(Math.random() * options.gridSize.cols);
+    const cell = board.grid[x][y];
+
+    board.open(cell);
+    board.toggleFlag(cell);
+
+
+    expect(cell.isFlagged).toBeFalse();
+    expect(cell.isOpen).toBeTrue();
+  });
+
 });

@@ -6,6 +6,8 @@ export type MineBoardOptions = {
 };
 
 export class MineBoard {
+
+
   private minesInitialized?: boolean;
   grid: MineBoardCell[][];
   constructor(private readonly options: MineBoardOptions) {
@@ -15,16 +17,22 @@ export class MineBoard {
   open(cell: MineBoardCell) {
     this.minesInitialized ??= this.initializeMineCells(cell);
 
-    cell.isOpen = true;
+    cell.isOpen ||= !cell.isFlagged;
+  }
+  toggleFlag(cell: MineBoardCell) {
+    cell.isFlagged = !cell.isOpen && !cell.isFlagged;
   }
   private initializeMineCells(cell: MineBoardCell): true {
 
-    const getMineCells = () => this.grid.reduce((all, c) => all.concat(...c.filter(_ => _.isMine)), []);
-    const getSafeCells = () => this.grid.reduce((all, c) => all.concat(...c.filter(_ => !_.isMine)), []);
+    const cellRowIndex = this.grid.findIndex(_=>_.includes(cell));
+    const cellColIndex = this.grid[cellRowIndex].indexOf(cell);
+
+    const getMineCells = () => this.grid.reduce((all, row,rowIndex) => all.concat(...row.filter((col,colIndex) => col.isMine && (Math.abs(rowIndex - cellRowIndex) > 1 || Math.abs(colIndex - cellColIndex) > 1))), []);
+    const getSafeCells = () => this.grid.reduce((all, row,rowIndex) => all.concat(...row.filter((col,colIndex) => !col.isMine && (Math.abs(rowIndex - cellRowIndex) > 1 || Math.abs(colIndex - cellColIndex) > 1))), []);
     let mineCells = getMineCells();
     let safeCells = getSafeCells();
 
-    while (mineCells.length < this.options.mineCount && safeCells.length > 9) {
+    while (mineCells.length < this.options.mineCount && safeCells.length > 0) {
       let randomIndex = Math.floor(Math.random() * safeCells.length);
       safeCells[randomIndex].isMine = true;
       mineCells = getMineCells();

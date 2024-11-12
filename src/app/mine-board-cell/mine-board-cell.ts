@@ -1,5 +1,5 @@
 export class MineBoardCell {
-  isMarked: boolean = false;
+  isFlagged: boolean = false;
   isMine: boolean = false;
   isOpen: boolean = false;
 }

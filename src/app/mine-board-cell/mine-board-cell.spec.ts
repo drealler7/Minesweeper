@@ -19,11 +19,11 @@ describe('MineBoardCell', () => {
   });
 
   it('should have isMarked set to false by default', () => {
-    expect(cell.isMarked).toBeFalse();
+    expect(cell.isFlagged).toBeFalse();
   });
 
   it('should set isMarked property to true', () => {
-    cell.isMarked = true;
-    expect(cell.isMarked).toBeTrue();
+    cell.isFlagged = true;
+    expect(cell.isFlagged).toBeTrue();
   });
 });

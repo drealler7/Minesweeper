@@ -1,4 +1,6 @@
-<button type="button" mat-button aria-label="Example icon button with a delete icon" (click)="mineBoard?.open(mineBoardCell!)" >
-  <mat-icon *ngIf="mineBoardCell?.isMarked" fontSet="material-symbols-outlined">flag</mat-icon>
-  <mat-icon *ngIf="mineBoardCell?.isMine" fontSet="material-symbols-outlined">explosion</mat-icon>
+<button type="button" mat-button aria-label="Example icon button with a delete icon"
+  [ngClass]="{'open' : mineBoardCell?.isOpen }"
+  (click)="mineBoard?.open(mineBoardCell!)">
+  <mat-icon *ngIf="mineBoardCell?.isFlagged" fontSet="material-symbols-outlined">flag</mat-icon>
+  <mat-icon *ngIf="mineBoardCell?.isMine && mineBoardCell?.isOpen" fontSet="material-symbols-outlined">explosion</mat-icon>
 </button>

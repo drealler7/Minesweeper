@@ -16,5 +16,10 @@ button{
   width: 100%;
   aspect-ratio: 1;
   height: unset;
-  background-color: red;
+  &:not(.open){
+    background-color: red;
+  }
+  &.open{
+    background-color: transparent;
+  }
 }
