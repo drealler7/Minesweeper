@@ -1,6 +1,6 @@
-<button type="button" mat-button aria-label="Example icon button with a delete icon"
+<button type="button" mat-button aria-label="Mine board cell"
   [ngClass]="{'open' : mineBoardCell?.isOpen }"
-  (click)="mineBoard?.open(mineBoardCell!)">
+  (click)="mineBoard?.open(mineBoardCell!)" (contextmenu)="toggleFlag($event)">
   <mat-icon *ngIf="mineBoardCell?.isFlagged" fontSet="material-symbols-outlined">flag</mat-icon>
   <mat-icon *ngIf="mineBoardCell?.isMine && mineBoardCell?.isOpen" fontSet="material-symbols-outlined">explosion</mat-icon>
 </button>

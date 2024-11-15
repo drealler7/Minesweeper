@@ -10,4 +10,8 @@ import { MineBoard } from '../mine-board/mine-board';
 export class MineBoardCellComponent {
   @Input({ required: true }) mineBoardCell?: MineBoardCell;
   @Input({ required: true }) mineBoard?: MineBoard;
+  toggleFlag(event: Event) {
+    this.mineBoard?.toggleFlag(this.mineBoardCell!);
+    event.preventDefault();
+  }
 }

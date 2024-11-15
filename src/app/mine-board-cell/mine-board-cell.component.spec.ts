@@ -13,7 +13,7 @@ describe('MineBoardCellComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MineBoardCellModule]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MineBoardCellComponent);
     component = fixture.componentInstance;
@@ -33,8 +33,18 @@ describe('MineBoardCellComponent', () => {
 
   it('should be able to set a mine board cell grid', () => {
 
-    component.mineBoard = new MineBoard({gridSize:{cols:10,rows:20},mineCount:10});
+    component.mineBoard = new MineBoard({ gridSize: { cols: 10, rows: 20 }, mineCount: 10 });
 
     expect(component.mineBoard).toBeTruthy();
+  });
+
+  it('should toggle Flag', () => {
+
+    component.mineBoardCell = new MineBoardCell();
+    component.mineBoard = new MineBoard({ gridSize: { cols: 10, rows: 20 }, mineCount: 10 });
+    const toggleSpy = spyOn(component.mineBoard, 'toggleFlag').and.callFake((cell) => expect(cell).toBe(component.mineBoardCell!));
+    component.toggleFlag(new Event('contextmenu'));
+
+    expect(toggleSpy).toHaveBeenCalled();
   });
 });
