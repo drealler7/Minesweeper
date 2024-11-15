@@ -95,4 +95,93 @@ describe('MineBoard', () => {
     expect(cell.isOpen).toBeTrue();
   });
 
+  it('should return adjacent Cells of middle cells', () => {
+    const x = 1,
+      y = 1;
+    const cell = board.grid[x][y];
+
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    expect(AdjacentCells.length).toBe(8);
+  });
+
+  it('should return adjacent Cells of top most cell', () => {
+    const x = 0,
+      y = 1;
+    const cell = board.grid[x][y];
+
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    expect(AdjacentCells.length).toBe(5);
+  });
+
+  it('should return adjacent Cells of bottom most cell', () => {
+    const x = board.grid.length - 1,
+      y = 1;
+    const cell = board.grid[x][y];
+
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    expect(AdjacentCells.length).toBe(5);
+  });
+
+  it('should return adjacent Cells of left most cell', () => {
+    const x = 1,
+      y = 0;
+    const cell = board.grid[x][y];
+
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    expect(AdjacentCells.length).toBe(5);
+  });
+
+  it('should return adjacent Cells of right most cell', () => {
+    const x = 1,
+      y = board.grid[x].length - 1;
+    const cell = board.grid[x][y];
+
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    expect(AdjacentCells.length).toBe(5);
+  });
+
+  it('should return adjacent Cells of very top left cell', () => {
+    const x = 0,
+      y = 0;
+    const cell = board.grid[x][y];
+
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    expect(AdjacentCells.length).toBe(3);
+  });
+
+  it('should return adjacent Cells of very top right cell', () => {
+    const x = 0,
+      y = board.grid[x].length - 1;
+    const cell = board.grid[x][y];
+
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    expect(AdjacentCells.length).toBe(3);
+  });
+
+  it('should return adjacent Cells of very bottom left cell', () => {
+    const x = board.grid.length - 1,
+      y = 0;
+    const cell = board.grid[x][y];
+
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    expect(AdjacentCells.length).toBe(3);
+  });
+
+  it('should return adjacent Cells of very bottom right cell', () => {
+    const x = board.grid.length - 1,
+      y = board.grid[x].length - 1;
+    const cell = board.grid[x][y];
+
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    expect(AdjacentCells.length).toBe(3);
+  });
 });

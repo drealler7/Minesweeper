@@ -8,9 +8,10 @@ export type MineBoardOptions = {
 export class MineBoard {
 
 
+
   private minesInitialized?: boolean;
   grid: MineBoardCell[][];
-  constructor(private readonly options: MineBoardOptions) {
+  constructor(readonly options: MineBoardOptions) {
     this.grid = MineBoard.generateGrid(options);
   }
 
@@ -19,9 +20,23 @@ export class MineBoard {
 
     cell.isOpen ||= !cell.isFlagged;
   }
+
   toggleFlag(cell: MineBoardCell) {
     cell.isFlagged = !cell.isOpen && !cell.isFlagged;
   }
+
+  getAdjacentCells(cell: MineBoardCell): MineBoardCell[] {
+    const cellRowIndex = this.grid.findIndex(_=>_.includes(cell));
+    const cellColIndex = this.grid[cellRowIndex].indexOf(cell);
+
+    return this.grid.reduce((adjacentCells, row,rowIndex) =>{
+      if(Math.abs(cellRowIndex - rowIndex) <= 1){
+        adjacentCells.push(...row.filter((_,colIndex)=> _ !== cell && Math.abs(cellColIndex - colIndex) <= 1 ));
+      }
+      return adjacentCells;
+    },[]);
+  }
+
   private initializeMineCells(cell: MineBoardCell): true {
 
     const cellRowIndex = this.grid.findIndex(_=>_.includes(cell));
