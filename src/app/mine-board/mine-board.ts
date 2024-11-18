@@ -6,9 +6,6 @@ export type MineBoardOptions = {
 };
 
 export class MineBoard {
-
-
-
   private minesInitialized?: boolean;
   grid: MineBoardCell[][];
   constructor(readonly options: MineBoardOptions) {
