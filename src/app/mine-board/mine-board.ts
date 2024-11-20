@@ -16,6 +16,7 @@ export class MineBoard {
     this.minesInitialized ??= this.initializeMineCells(cell);
 
     cell.isOpen ||= !cell.isFlagged;
+    this.openAdjacentCells(cell);
   }
 
   toggleFlag(cell: MineBoardCell) {
@@ -23,24 +24,39 @@ export class MineBoard {
   }
 
   getAdjacentCells(cell: MineBoardCell): MineBoardCell[] {
-    const cellRowIndex = this.grid.findIndex(_=>_.includes(cell));
+    const cellRowIndex = this.grid.findIndex(_ => _.includes(cell));
     const cellColIndex = this.grid[cellRowIndex].indexOf(cell);
 
-    return this.grid.reduce((adjacentCells, row,rowIndex) =>{
-      if(Math.abs(cellRowIndex - rowIndex) <= 1){
-        adjacentCells.push(...row.filter((_,colIndex)=> _ !== cell && Math.abs(cellColIndex - colIndex) <= 1 ));
+    return this.grid.reduce((adjacentCells, row, rowIndex) => {
+      if (Math.abs(cellRowIndex - rowIndex) <= 1) {
+        adjacentCells.push(...row.filter((_, colIndex) => _ !== cell && Math.abs(cellColIndex - colIndex) <= 1));
       }
       return adjacentCells;
-    },[]);
+    }, []);
+  }
+
+  private openAdjacentCells(cell: MineBoardCell) {
+    if (!cell.isOpen) {
+      return;
+    }
+
+    const adjacentCells = this.getAdjacentCells(cell);
+
+    if (adjacentCells.filter(_ => _.isMine).length == adjacentCells.filter(_ => _.isFlagged).length) {
+      for (const adjacentCell of adjacentCells.filter(_=>!_.isOpen)) {
+        this.open(adjacentCell);
+      }
+    }
+
   }
 
   private initializeMineCells(cell: MineBoardCell): true {
 
-    const cellRowIndex = this.grid.findIndex(_=>_.includes(cell));
+    const cellRowIndex = this.grid.findIndex(_ => _.includes(cell));
     const cellColIndex = this.grid[cellRowIndex].indexOf(cell);
 
-    const getMineCells = () => this.grid.reduce((all, row,rowIndex) => all.concat(...row.filter((col,colIndex) => col.isMine && (Math.abs(rowIndex - cellRowIndex) > 1 || Math.abs(colIndex - cellColIndex) > 1))), []);
-    const getSafeCells = () => this.grid.reduce((all, row,rowIndex) => all.concat(...row.filter((col,colIndex) => !col.isMine && (Math.abs(rowIndex - cellRowIndex) > 1 || Math.abs(colIndex - cellColIndex) > 1))), []);
+    const getMineCells = () => this.grid.reduce((all, row, rowIndex) => all.concat(...row.filter((col, colIndex) => col.isMine && (Math.abs(rowIndex - cellRowIndex) > 1 || Math.abs(colIndex - cellColIndex) > 1))), []);
+    const getSafeCells = () => this.grid.reduce((all, row, rowIndex) => all.concat(...row.filter((col, colIndex) => !col.isMine && (Math.abs(rowIndex - cellRowIndex) > 1 || Math.abs(colIndex - cellColIndex) > 1))), []);
     let mineCells = getMineCells();
     let safeCells = getSafeCells();
 

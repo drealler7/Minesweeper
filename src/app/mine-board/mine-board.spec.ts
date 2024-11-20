@@ -5,10 +5,29 @@ describe('MineBoard', () => {
     mineCount: 10,
     gridSize: { rows: 10, cols: 10 },
   };
+
   let board = new MineBoard(options);
+
+  const getRandomCell = () => {
+    const x = Math.floor(Math.random() * options.gridSize.rows),
+      y = Math.floor(Math.random() * options.gridSize.cols);
+    return board.grid[x][y];
+  }
+
+  const getSafeCellWithAdjacentMines = () => {
+    for (const cells of board.grid) {
+      for (const cell of cells) {
+        if (!cell.isMine && board.getAdjacentCells(cell).some(_ => _.isMine)) {
+          return cell;
+        }
+      }
+    }
+    return undefined;
+  }
+
   beforeEach(() => {
     board = new MineBoard(options);
-  })
+  });
 
   it('should create an instance', () => {
     expect(board).toBeTruthy();
@@ -23,10 +42,8 @@ describe('MineBoard', () => {
     board.grid.forEach((_) => expect(_.length).toBe(options.gridSize.cols));
   });
 
-  it('should open none mine random cell', () => {
-    const x = Math.floor(Math.random() * options.gridSize.rows),
-      y = Math.floor(Math.random() * options.gridSize.cols);
-    const cell = board.grid[x][y];
+  it('should open random none mine cell', () => {
+    const cell = getRandomCell();
 
     board.open(cell);
 
@@ -36,9 +53,7 @@ describe('MineBoard', () => {
   });
 
   it('should Initials mines', () => {
-    const x = Math.floor(Math.random() * options.gridSize.rows),
-      y = Math.floor(Math.random() * options.gridSize.cols);
-    const cell = board.grid[x][y];
+    const cell = getRandomCell();
     const HasMineBeforeOpen = board.grid.some((_) => _.some((__) => __.isMine));
 
     board.open(cell);
@@ -49,10 +64,34 @@ describe('MineBoard', () => {
     expect(HasMineAfterOpen).toBeTrue();
   });
 
+  it('should open adjacent cells', () => {
+
+    const cell = getRandomCell();
+
+    board.open(cell);
+    const AdjacentCells = board.getAdjacentCells(cell);
+
+    AdjacentCells.forEach(_=>expect(_.isOpen).toBeTrue());
+  });
+
+  it('should not open adjacent cell if adjacent flagged mine cells count is less than adjacent mine cells count', () => {
+
+    const cell = getRandomCell();
+    board.open(cell);
+    const safeCellWithAdjacentMine = getSafeCellWithAdjacentMines();
+    const AdjacentCells = board.getAdjacentCells(safeCellWithAdjacentMine!);
+    const alreadyOpen = AdjacentCells.filter(_=>_.isOpen);
+
+    board.open(safeCellWithAdjacentMine!);
+
+    expect(safeCellWithAdjacentMine).toBeTruthy();
+    expect(alreadyOpen.length).toBe(AdjacentCells.filter(_=>_.isOpen).length);
+  });
+
+
+
   it('should toggle cell flag to flagged', () => {
-    const x = Math.floor(Math.random() * options.gridSize.rows),
-      y = Math.floor(Math.random() * options.gridSize.cols);
-    const cell = board.grid[x][y];
+    const cell = getRandomCell();
 
     board.toggleFlag(cell);
 
@@ -60,9 +99,7 @@ describe('MineBoard', () => {
   });
 
   it('should toggle cell flag to not flagged', () => {
-    const x = Math.floor(Math.random() * options.gridSize.rows),
-      y = Math.floor(Math.random() * options.gridSize.cols);
-    const cell = board.grid[x][y];
+    const cell = getRandomCell();
 
     board.toggleFlag(cell);
     board.toggleFlag(cell);
@@ -71,9 +108,7 @@ describe('MineBoard', () => {
   });
 
   it('should not open flagged cell', () => {
-    const x = Math.floor(Math.random() * options.gridSize.rows),
-      y = Math.floor(Math.random() * options.gridSize.cols);
-    const cell = board.grid[x][y];
+    const cell = getRandomCell();
 
     board.toggleFlag(cell);
     board.open(cell);
@@ -83,9 +118,7 @@ describe('MineBoard', () => {
     expect(cell.isOpen).toBeFalse();
   });
   it('should not toggle flag of open cell', () => {
-    const x = Math.floor(Math.random() * options.gridSize.rows),
-      y = Math.floor(Math.random() * options.gridSize.cols);
-    const cell = board.grid[x][y];
+    const cell = getRandomCell();
 
     board.open(cell);
     board.toggleFlag(cell);
