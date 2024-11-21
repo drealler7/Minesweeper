@@ -8,10 +8,17 @@ import { MineBoard } from '../mine-board/mine-board';
   styleUrl: './mine-board-cell.component.scss'
 })
 export class MineBoardCellComponent {
-  @Input({ required: true }) mineBoardCell?: MineBoardCell;
-  @Input({ required: true }) mineBoard?: MineBoard;
-  toggleFlag(event: Event) {
-    this.mineBoard?.toggleFlag(this.mineBoardCell!);
+  @Input({ required: true }) mineBoardCell!: MineBoardCell;
+  @Input({ required: true }) mineBoard!: MineBoard;
+  @Input({ required: true }) openCell!: (cell: MineBoardCell) => Promise<void>;
+  @Input({ required: true }) toggleFlag!: (cell: MineBoardCell) => void;
+  contextMenu(event: Event) {
+    this.toggleFlag(this.mineBoardCell);
+    event.preventDefault();
+  }
+
+  click(event: Event) {
+    this.openCell(this.mineBoardCell);
     event.preventDefault();
   }
 }

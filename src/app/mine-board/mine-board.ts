@@ -12,11 +12,12 @@ export class MineBoard {
     this.grid = MineBoard.generateGrid(options);
   }
 
-  open(cell: MineBoardCell) {
+  async openCell(cell: MineBoardCell) {
     this.minesInitialized ??= this.initializeMineCells(cell);
 
     cell.isOpen ||= !cell.isFlagged;
-    this.openAdjacentCells(cell);
+    await new Promise<void>(_=>setTimeout(_,1));
+    await this.openAdjacentCells(cell);
   }
 
   toggleFlag(cell: MineBoardCell) {
@@ -35,7 +36,7 @@ export class MineBoard {
     }, []);
   }
 
-  private openAdjacentCells(cell: MineBoardCell) {
+  private async openAdjacentCells(cell: MineBoardCell) {
     if (!cell.isOpen) {
       return;
     }
@@ -43,9 +44,7 @@ export class MineBoard {
     const adjacentCells = this.getAdjacentCells(cell);
 
     if (adjacentCells.filter(_ => _.isMine).length == adjacentCells.filter(_ => _.isFlagged).length) {
-      for (const adjacentCell of adjacentCells.filter(_=>!_.isOpen)) {
-        this.open(adjacentCell);
-      }
+      await Promise.all(adjacentCells.filter(_=>!_.isOpen).map(_=>  this.openCell(_)));
     }
 
   }

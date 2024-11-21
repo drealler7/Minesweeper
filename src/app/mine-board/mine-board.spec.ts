@@ -37,26 +37,26 @@ describe('MineBoard', () => {
     expect(board.grid.length).toBe(options.gridSize.rows);
   });
 
-  it('should have grid col length same as options col', () => {
+  it('should have grid col length same as options col', async () => {
     expect(board.grid.length).toBe(options.gridSize.rows);
     board.grid.forEach((_) => expect(_.length).toBe(options.gridSize.cols));
   });
 
-  it('should open random none mine cell', () => {
+  it('should open random none mine cell', async () => {
     const cell = getRandomCell();
 
-    board.open(cell);
+    await board.openCell(cell);
 
     expect(cell.isMine).toBeFalse();
     expect(cell.isFlagged).toBeFalse();
     expect(cell.isOpen).toBeTrue();
   });
 
-  it('should Initials mines', () => {
+  it('should Initials mines', async () => {
     const cell = getRandomCell();
     const HasMineBeforeOpen = board.grid.some((_) => _.some((__) => __.isMine));
 
-    board.open(cell);
+    await board.openCell(cell);
 
     const HasMineAfterOpen = board.grid.some((_) => _.some((__) => __.isMine));
 
@@ -64,25 +64,25 @@ describe('MineBoard', () => {
     expect(HasMineAfterOpen).toBeTrue();
   });
 
-  it('should open adjacent cells', () => {
+  it('should open adjacent cells', async () => {
 
     const cell = getRandomCell();
 
-    board.open(cell);
+    await board.openCell(cell);
     const AdjacentCells = board.getAdjacentCells(cell);
 
     AdjacentCells.forEach(_=>expect(_.isOpen).toBeTrue());
   });
 
-  it('should not open adjacent cell if adjacent flagged mine cells count is less than adjacent mine cells count', () => {
+  it('should not open adjacent cell if adjacent flagged mine cells count is less than adjacent mine cells count', async () => {
 
     const cell = getRandomCell();
-    board.open(cell);
+    await board.openCell(cell);
     const safeCellWithAdjacentMine = getSafeCellWithAdjacentMines();
     const AdjacentCells = board.getAdjacentCells(safeCellWithAdjacentMine!);
     const alreadyOpen = AdjacentCells.filter(_=>_.isOpen);
 
-    board.open(safeCellWithAdjacentMine!);
+    await board.openCell(safeCellWithAdjacentMine!);
 
     expect(safeCellWithAdjacentMine).toBeTruthy();
     expect(alreadyOpen.length).toBe(AdjacentCells.filter(_=>_.isOpen).length);
@@ -107,20 +107,20 @@ describe('MineBoard', () => {
     expect(cell.isFlagged).toBeFalse();
   });
 
-  it('should not open flagged cell', () => {
+  it('should not open flagged cell', async() => {
     const cell = getRandomCell();
 
     board.toggleFlag(cell);
-    board.open(cell);
+    await board.openCell(cell);
 
 
     expect(cell.isFlagged).toBeTrue();
     expect(cell.isOpen).toBeFalse();
   });
-  it('should not toggle flag of open cell', () => {
+  it('should not toggle flag of open cell', async () => {
     const cell = getRandomCell();
 
-    board.open(cell);
+    await board.openCell(cell);
     board.toggleFlag(cell);
 
 

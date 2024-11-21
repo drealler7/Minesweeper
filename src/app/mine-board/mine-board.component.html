@@ -7,7 +7,7 @@
   <tbody>
     <tr *ngFor="let cells of mineBoard.grid">
       <td *ngFor="let cell of cells">
-        <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell" />
+        <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell" [openCell]="openCell" [toggleFlag]="toggleFlag" />
       </td>
     </tr>
   </tbody>

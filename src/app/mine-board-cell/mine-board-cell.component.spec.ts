@@ -17,6 +17,10 @@ describe('MineBoardCellComponent', () => {
 
     fixture = TestBed.createComponent(MineBoardCellComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('mineBoardCell', new MineBoardCell());
+    fixture.componentRef.setInput('mineBoard', new MineBoard({ gridSize: { cols: 10, rows: 20 }, mineCount: 10 }));
+    fixture.componentRef.setInput('openCell', (cell:MineBoardCell) => Promise.resolve(expect(cell).toBe(component.mineBoardCell)));
+    fixture.componentRef.setInput('toggleFlag', (cell:MineBoardCell) => expect(cell).toBe(component.mineBoardCell));
     fixture.detectChanges();
   });
 
@@ -39,12 +43,25 @@ describe('MineBoardCellComponent', () => {
   });
 
   it('should toggle Flag', () => {
+    const event = new Event('contextmenu');
+    const componentSpy = spyOn(component, 'toggleFlag').and.callFake((cell) => expect(cell).toBe(component.mineBoardCell));
+    const eventSpy = spyOn(event, 'preventDefault').and.callFake(() => {});
 
-    component.mineBoardCell = new MineBoardCell();
-    component.mineBoard = new MineBoard({ gridSize: { cols: 10, rows: 20 }, mineCount: 10 });
-    const toggleSpy = spyOn(component.mineBoard, 'toggleFlag').and.callFake((cell) => expect(cell).toBe(component.mineBoardCell!));
-    component.toggleFlag(new Event('contextmenu'));
+    component.contextMenu(event);
 
-    expect(toggleSpy).toHaveBeenCalled();
+    expect(componentSpy).toHaveBeenCalled();
+    expect(eventSpy).toHaveBeenCalled();
+  });
+
+  it('should open cell', () => {
+
+    const event = new Event('click');
+    const componentSpy = spyOn(component, 'openCell').and.callFake((cell) => Promise.resolve(expect(cell).toBe(component.mineBoardCell)));
+    const eventSpy = spyOn(event, 'preventDefault').and.callFake(() => {});
+
+    component.click(event);
+
+    expect(componentSpy).toHaveBeenCalled();
+    expect(eventSpy).toHaveBeenCalled();
   });
 });
