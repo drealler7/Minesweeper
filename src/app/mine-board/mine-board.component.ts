@@ -3,9 +3,10 @@ import { MineBoard } from './mine-board';
 import { MineBoardCell } from '../mine-board-cell/mine-board-cell';
 
 @Component({
-  selector: 'app-mine-board',
-  templateUrl: './mine-board.component.html',
-  styleUrl: './mine-board.component.scss'
+    selector: 'app-mine-board',
+    templateUrl: './mine-board.component.html',
+    styleUrl: './mine-board.component.scss',
+    standalone: false
 })
 export class MineBoardComponent {
   readonly mineBoard = new MineBoard({ mineCount: 20, gridSize: { cols: 10, rows: 10 } });

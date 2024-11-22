@@ -3,7 +3,8 @@ import { MineBoardCell } from './mine-board-cell';
 import { MineBoard } from '../mine-board/mine-board';
 
 @Pipe({
-  name: 'mineBoardCell'
+    name: 'mineBoardCell',
+    standalone: false
 })
 export class MineBoardCellPipe implements PipeTransform {
 

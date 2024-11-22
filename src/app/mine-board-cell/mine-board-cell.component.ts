@@ -3,9 +3,10 @@ import { MineBoardCell } from './mine-board-cell';
 import { MineBoard } from '../mine-board/mine-board';
 
 @Component({
-  selector: 'app-mine-board-cell',
-  templateUrl: './mine-board-cell.component.html',
-  styleUrl: './mine-board-cell.component.scss'
+    selector: 'app-mine-board-cell',
+    templateUrl: './mine-board-cell.component.html',
+    styleUrl: './mine-board-cell.component.scss',
+    standalone: false
 })
 export class MineBoardCellComponent {
   @Input({ required: true }) mineBoardCell!: MineBoardCell;
