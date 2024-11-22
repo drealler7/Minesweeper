@@ -27,7 +27,7 @@ jobs:
         id: build
         run: |
           npm install
-          ng build --base-href /Minesweeper/
+          npm run build:github-page
 
       - name: Upload static files as artifact
         id: deployment
