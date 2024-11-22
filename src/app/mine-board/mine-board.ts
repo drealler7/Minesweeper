@@ -1,4 +1,5 @@
 import { MineBoardCell } from '../mine-board-cell/mine-board-cell';
+import { MineBoardState } from '../mine-board-state/mine-board-state';
 
 export type MineBoardOptions = {
   mineCount: number;
@@ -6,18 +7,34 @@ export type MineBoardOptions = {
 };
 
 export class MineBoard {
-  private minesInitialized?: boolean;
+  state: MineBoardState = MineBoardState.Initial;
   grid: MineBoardCell[][];
   constructor(readonly options: MineBoardOptions) {
     this.grid = MineBoard.generateGrid(options);
   }
 
   async openCell(cell: MineBoardCell) {
-    this.minesInitialized ??= this.initializeMineCells(cell);
+    if (this.state === MineBoardState.gameOver) {
+      return;
+    } else if (this.state === MineBoardState.Initial) {
+      this.initializeMineCells(cell);
+    }
+    if (this.state !== MineBoardState.OpeningCard) {
+      this.state = MineBoardState.OpeningCard;
+    }
 
     cell.isOpen ||= !cell.isFlagged;
-    await new Promise<void>(_=>setTimeout(_,1));
+
+    if(cell.isOpen && cell.isMine){
+      this.state = MineBoardState.gameOver;
+      return;
+    }
+
+    await new Promise<void>(_ => setTimeout(_, 1));
     await this.openAdjacentCells(cell);
+
+    this.state = MineBoardState.Initialized;
+
   }
 
   toggleFlag(cell: MineBoardCell) {
@@ -44,7 +61,7 @@ export class MineBoard {
     const adjacentCells = this.getAdjacentCells(cell);
 
     if (adjacentCells.filter(_ => _.isMine).length == adjacentCells.filter(_ => _.isFlagged).length) {
-      await Promise.all(adjacentCells.filter(_=>!_.isOpen).map(_=>  this.openCell(_)));
+      await Promise.all(adjacentCells.filter(_ => !_.isOpen).map(_ => this.openCell(_)));
     }
 
   }

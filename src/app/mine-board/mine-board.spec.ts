@@ -1,3 +1,4 @@
+import { MineBoardState } from '../mine-board-state/mine-board-state';
 import { MineBoard, MineBoardOptions } from './mine-board';
 
 describe('MineBoard', () => {
@@ -60,9 +61,35 @@ describe('MineBoard', () => {
 
     const HasMineAfterOpen = board.grid.some((_) => _.some((__) => __.isMine));
 
+    expect(board.state).toBe(MineBoardState.Initialized);
     expect(HasMineBeforeOpen).toBeFalse();
     expect(HasMineAfterOpen).toBeTrue();
   });
+
+
+  it('should have game over state if a mine is opened', async () => {
+    const cell = getRandomCell();
+
+    await board.openCell(cell);
+
+    const mineCell = board.grid.find(_=>_.some(__=>__.isMine))!.find((_) => _.isMine)!;
+
+    await board.openCell(mineCell);
+
+    expect(board.state).toBe(MineBoardState.gameOver);
+  });
+
+  it('should have game over state if a mine is opened', async () => {
+    const cell = getRandomCell();
+    await board.openCell(cell);
+
+    const mineCell = board.grid.find(_=>_.some(__=>__.isMine))!.find((_) => _.isMine)!;
+
+    await board.openCell(mineCell);
+
+    expect(board.state).toBe(MineBoardState.gameOver);
+  });
+
 
   it('should open adjacent cells', async () => {
 

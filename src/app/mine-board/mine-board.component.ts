@@ -18,7 +18,6 @@ export class MineBoardComponent {
     this.openingCell = true;
     await this.mineBoard.openCell(cell);
     this.openingCell = false;
-
   }
   toggleFlag(cell: MineBoardCell) {
     if(this.openingCell){
