@@ -33,7 +33,7 @@ jobs:
         id: deployment
         uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
         with:
-          path: /home/runner/work/Minesweeper/Minesweeper/dist/minesweeper/
+          path: /home/runner/work/Minesweeper/Minesweeper/dist/minesweeper/browser/
 
   # Deployment job
   deploy:
