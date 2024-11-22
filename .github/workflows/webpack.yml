@@ -7,6 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
+
   # Build job
   build:
     # Specify runner +  build & upload the static files as an artifact
@@ -36,6 +37,9 @@ jobs:
 
   # Deployment job
   deploy:
+    permissions:
+      id-token: write
+      pages: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
