@@ -69,18 +69,6 @@ describe('MineBoard', () => {
 
   it('should have game over state if a mine is opened', async () => {
     const cell = getRandomCell();
-
-    await board.openCell(cell);
-
-    const mineCell = board.grid.find(_=>_.some(__=>__.isMine))!.find((_) => _.isMine)!;
-
-    await board.openCell(mineCell);
-
-    expect(board.state).toBe(MineBoardState.gameOver);
-  });
-
-  it('should have game over state if a mine is opened', async () => {
-    const cell = getRandomCell();
     await board.openCell(cell);
 
     const mineCell = board.grid.find(_=>_.some(__=>__.isMine))!.find((_) => _.isMine)!;
@@ -144,6 +132,20 @@ describe('MineBoard', () => {
     expect(cell.isFlagged).toBeTrue();
     expect(cell.isOpen).toBeFalse();
   });
+
+  it('should not initialize from a flagged cell', async() => {
+    const cell = getRandomCell();
+
+    board.toggleFlag(cell);
+    await board.openCell(cell);
+
+
+    expect(cell.isFlagged).toBeTrue();
+    expect(cell.isOpen).toBeFalse();
+    expect(board.state).toBe(MineBoardState.Initial);
+
+  });
+
   it('should not toggle flag of open cell', async () => {
     const cell = getRandomCell();
 

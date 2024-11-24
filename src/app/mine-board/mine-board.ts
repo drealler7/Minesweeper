@@ -14,7 +14,7 @@ export class MineBoard {
   }
 
   async openCell(cell: MineBoardCell) {
-    if (this.state === MineBoardState.gameOver) {
+    if (this.state === MineBoardState.gameOver || cell.isFlagged) {
       return;
     } else if (this.state === MineBoardState.Initial) {
       this.initializeMineCells(cell);
@@ -23,9 +23,9 @@ export class MineBoard {
       this.state = MineBoardState.OpeningCard;
     }
 
-    cell.isOpen ||= !cell.isFlagged;
+    cell.isOpen = true;
 
-    if(cell.isOpen && cell.isMine){
+    if(cell.isMine){
       this.state = MineBoardState.gameOver;
       return;
     }
