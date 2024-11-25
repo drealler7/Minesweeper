@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MineBoard } from './mine-board';
 import { MineBoardCell } from '../mine-board-cell/mine-board-cell';
+import { MineBoardOptionsService } from '../mine-board-options/mine-board-options.service';
 
 @Component({
     selector: 'app-mine-board',
@@ -9,7 +10,7 @@ import { MineBoardCell } from '../mine-board-cell/mine-board-cell';
     standalone: false
 })
 export class MineBoardComponent {
-  readonly mineBoard = new MineBoard({ mineCount: 20, gridSize: { cols: 10, rows: 10 } });
+  mineBoard = this.generateMineBoard();
   openingCell: boolean = false;
 
   async openCell(cell: MineBoardCell) {
@@ -25,5 +26,10 @@ export class MineBoardComponent {
       return;
     }
     this.mineBoard.toggleFlag(cell);
+  }
+
+  
+  private generateMineBoard(){
+    return new MineBoard(inject(MineBoardOptionsService).options);
   }
 }

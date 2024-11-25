@@ -1,10 +1,6 @@
 import { MineBoardCell } from '../mine-board-cell/mine-board-cell';
+import { MineBoardOptions } from '../mine-board-options/mine-board-options';
 import { MineBoardState } from '../mine-board-state/mine-board-state';
-
-export type MineBoardOptions = {
-  mineCount: number;
-  gridSize: { rows: number; cols: number };
-};
 
 export class MineBoard {
   state: MineBoardState = MineBoardState.Initial;

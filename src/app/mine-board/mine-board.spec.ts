@@ -1,5 +1,6 @@
+import { MineBoardOptions } from '../mine-board-options/mine-board-options';
 import { MineBoardState } from '../mine-board-state/mine-board-state';
-import { MineBoard, MineBoardOptions } from './mine-board';
+import { MineBoard } from './mine-board';
 
 describe('MineBoard', () => {
   const options: MineBoardOptions = {
