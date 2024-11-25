@@ -7,22 +7,30 @@ on:
     branches: [ "master" ]
 
 jobs:
-
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: test
+        id: test
+        run: |
+          npm install
+          npm run test:github-page
   # Build job
   build:
     # Specify runner +  build & upload the static files as an artifact
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [22.x]
-
+    needs: unit-tests
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22.x
       - name: Build
         id: build
         run: |
