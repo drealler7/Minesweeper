@@ -1,3 +1,17 @@
-table{
+.grid {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  .row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    align-items: center;
+
+    .col {
+      flex-grow: 1;
+    }
+  }
 }

@@ -1,14 +1,7 @@
-<table>
-  <thead>
-    <tr>
-      <th [attr.colspan]="mineBoard.options.gridSize.cols">Timer</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let cells of mineBoard.grid">
-      <td *ngFor="let cell of cells">
+<div class="grid">
+  <div class="row" *ngFor="let cells of mineBoard.grid">
+      <div class="col" *ngFor="let cell of cells">
         <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell" [openCell]="openCell" [toggleFlag]="toggleFlag" />
-      </td>
-    </tr>
-  </tbody>
-</table>
+    </div>
+  </div>
+</div>
