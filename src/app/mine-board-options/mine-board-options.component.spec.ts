@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { MineBoardOptionsComponent } from './mine-board-options.component';
 import { FormGroup } from '@angular/forms';
 import { MineBoardOptionsService } from './mine-board-options.service';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 describe('MineBoardOptionsComponent', () => {
   let component: MineBoardOptionsComponent;
@@ -11,9 +11,13 @@ describe('MineBoardOptionsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MineBoardOptionsComponent],
-      providers: [MineBoardOptionsService]
+      providers: [
+        provideAnimationsAsync(),
+        MineBoardOptionsService
+      ]
+
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MineBoardOptionsComponent);
     component = fixture.componentInstance;
@@ -35,7 +39,7 @@ describe('MineBoardOptionsComponent', () => {
 
   it('should save valid form', () => {
     component.optionsForm.controls.mineCount.setValue(10);
-    
+
     component.save();
 
     expect(TestBed.inject(MineBoardOptionsService).options.mineCount).toBe(10);

@@ -1,1 +1,25 @@
-<p>mine-board-options works!</p>
+<form [formGroup]="optionsForm" (submit)="save()">
+  <h2 mat-dialog-title>Settings</h2>
+  <mat-dialog-content>
+    <div [formGroup]="optionsForm.controls.gridSize">
+      <h5>Grid Size (Rows &times; Columns)</h5>
+      <mat-form-field>
+        <mat-label>Grid Rows</mat-label>
+        <input matInput type="number"  formControlName="rows" placeholder="Enter Number of Rows" formControlName="rows" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Grid Columns</mat-label>
+        <input matInput type="number"  formControlName="cols" placeholder="Enter Number of Columns" formControlName="cols" type="number" />
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Mines</mat-label>
+      <input matInput type="number"  formControlName="cols" placeholder="Enter Number of mines" formControlName="mineCount" type="number" />
+    </mat-form-field>
+  </mat-dialog-content>
+  <hr />
+  <mat-dialog-actions>
+    <button type="button" mat-button>Discard</button>
+    <button type="submit" mat-button cdkFocusInitial>Save</button>
+  </mat-dialog-actions>
+</form>

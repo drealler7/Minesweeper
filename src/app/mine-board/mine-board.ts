@@ -15,8 +15,8 @@ export class MineBoard {
     } else if (this.state === MineBoardState.Initial) {
       this.initializeMineCells(cell);
     }
-    if (this.state !== MineBoardState.OpeningCard) {
-      this.state = MineBoardState.OpeningCard;
+    if (this.state !== MineBoardState.openingCard) {
+      this.state = MineBoardState.openingCard;
     }
 
     cell.isOpen = true;

@@ -1,7 +1,27 @@
-<div class="grid">
-  <div class="row" *ngFor="let cells of mineBoard.grid">
-      <div class="col" *ngFor="let cell of cells">
-        <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell" [openCell]="openCell" [toggleFlag]="toggleFlag" />
+<div class="container">
+  <section class="header">
+    <h3>
+      <span class="material-symbols-outlined">timer</span>
+    </h3>
+  </section>
+  <section class="board">
+    <div class="grid">
+      <div class="row" *ngFor="let cells of mineBoard.grid">
+        <div class="col" *ngFor="let cell of cells">
+          <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell" [openCell]="openCell" [toggleFlag]="toggleFlag" />
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+  <section class="footer">
+    <button type="button" mat-fab extended aria-label="Open options dialog button" title="Open options dialog button" (click)="openOptions()">
+      <mat-icon fontSet="material-symbols-outlined">settings</mat-icon>
+      <span>Settings</span>
+    </button>
+    <button type="button" mat-fab extended aria-label="Open options dialog button" title="Restart board" (click)="restart()">
+      <mat-icon fontSet="material-symbols-outlined">restart_alt</mat-icon>
+      <span>Restart</span>
+    </button>
+  </section>
 </div>
+

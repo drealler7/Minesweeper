@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MineBoardComponent } from './mine-board.component';
-import { MineBoardModule } from './mine-board.module';
-
+import {Dialog } from '@angular/cdk/dialog';
+import { MineBoardState } from '../mine-board-state/mine-board-state';
 describe('MineBoardComponent', () => {
   let component: MineBoardComponent;
   let fixture: ComponentFixture<MineBoardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MineBoardModule]
+      imports: [MineBoardComponent]
     })
     .compileComponents();
 
@@ -57,5 +57,23 @@ describe('MineBoardComponent', () => {
     await component.openCell(cell);
 
     expect(openCellSpy).toHaveBeenCalledTimes(0);
+  });
+
+  it('should restart board', async () => {
+    const cell = component.mineBoard.grid[0][0];
+    await component.openCell(cell);
+
+    component.restart();
+
+    component.mineBoard.grid.forEach(row => expect(row.every(_=>!_.isMine && !_.isFlagged && !_.isOpen)).toBeTrue());
+    expect(component.mineBoard.state).toBe(MineBoardState.Initial);
+  });
+
+  it('should open options dialog', () => {
+    const dialogOpen = spyOn(TestBed.inject(Dialog),'open').and.callThrough();
+
+    component.openOptions();
+
+    expect(dialogOpen).toHaveBeenCalledTimes(1);
   });
 });
