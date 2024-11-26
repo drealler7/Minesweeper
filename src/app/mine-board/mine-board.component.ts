@@ -8,6 +8,7 @@ import { MineBoardCellModule } from '../mine-board-cell/mine-board-cell.module';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MineBoardState } from '../mine-board-state/mine-board-state';
 
 @Component({
   selector: 'app-mine-board',
@@ -26,21 +27,16 @@ export class MineBoardComponent {
   private readonly optionsService = inject(MineBoardOptionsService);
   private readonly dialog = inject(Dialog);
   mineBoard = this.generateMineBoard();
-  openingCell: boolean = false;
 
   async openCell(cell: MineBoardCell) {
-    if (this.openingCell) {
-      return;
+    if (this.mineBoard.state === MineBoardState.Initial || this.mineBoard.state === MineBoardState.Initialized) {
+      await this.mineBoard.openCell(cell);
     }
-    this.openingCell = true;
-    await this.mineBoard.openCell(cell);
-    this.openingCell = false;
   }
   toggleFlag(cell: MineBoardCell) {
-    if (this.openingCell) {
-      return;
+    if (this.mineBoard.state === MineBoardState.Initial || this.mineBoard.state === MineBoardState.Initialized) {
+      this.mineBoard.toggleFlag(cell);
     }
-    this.mineBoard.toggleFlag(cell);
   }
 
   restart() {
@@ -48,7 +44,7 @@ export class MineBoardComponent {
   }
 
   openOptions() {
-    const dialogRef = this.dialog.open(MineBoardOptionsComponent, {
+    const dialogRef = this.dialog.open<boolean>(MineBoardOptionsComponent, {
       providers: [
         {
           provide: MineBoardOptionsService,
@@ -59,7 +55,11 @@ export class MineBoardComponent {
       maxWidth: '350px'
     });
 
-    dialogRef.closed.subscribe(_ => this.restart());
+    dialogRef.closed.subscribe(updated => {
+      if (updated) {
+        this.restart();
+      }
+    });
   }
 
   private generateMineBoard() {

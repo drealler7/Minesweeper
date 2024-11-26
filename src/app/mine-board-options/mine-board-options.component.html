@@ -19,7 +19,7 @@
   </mat-dialog-content>
   <hr />
   <mat-dialog-actions>
-    <button type="button" mat-button>Discard</button>
+    <button type="button" mat-button (click)="dialog.close()">Discard</button>
     <button type="submit" mat-button cdkFocusInitial>Save</button>
   </mat-dialog-actions>
 </form>

@@ -1,5 +1,5 @@
 .container{
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   .board{
@@ -29,6 +29,7 @@
 
     .col {
       padding: 2px;
+      max-width: 100px;
       flex-grow: 1;
     }
   }

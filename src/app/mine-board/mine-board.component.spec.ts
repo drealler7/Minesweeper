@@ -35,8 +35,9 @@ describe('MineBoardComponent', () => {
 
   it('should not toggle Flag if already opening cell', () => {
     const cell = component.mineBoard.grid[0][0];
+    component.mineBoard.state = MineBoardState.openingCard
     const toggleSpy = spyOn(component.mineBoard, 'toggleFlag').and.callFake((cell) => expect(cell).toBe(cell));
-    component.openingCell = true;
+
     component.toggleFlag(cell);
 
     expect(toggleSpy).toHaveBeenCalledTimes(0);
@@ -52,8 +53,9 @@ describe('MineBoardComponent', () => {
 
   it('should not Open Cell if already opening cell', async () => {
     const cell = component.mineBoard.grid[0][0];
+    component.mineBoard.state = MineBoardState.openingCard
     const openCellSpy = spyOn(component.mineBoard, 'openCell').and.callFake((cell) => Promise.resolve(expect(cell).toBe(cell)));
-    component.openingCell = true;
+
     await component.openCell(cell);
 
     expect(openCellSpy).toHaveBeenCalledTimes(0);

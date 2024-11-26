@@ -11,6 +11,7 @@ import {
 import { MatFormFieldModule} from '@angular/material/form-field';
 
 import {MatInputModule} from '@angular/material/input';
+import { DialogRef } from '@angular/cdk/dialog';
 @Component({
   selector: 'app-mine-board-options',
   templateUrl: './mine-board-options.component.html',
@@ -27,6 +28,7 @@ import {MatInputModule} from '@angular/material/input';
 })
 export class MineBoardOptionsComponent {
   private readonly service = inject(MineBoardOptionsService);
+  readonly dialog = inject(DialogRef);
 
   optionsForm = this.initializeForm();
 
@@ -38,7 +40,8 @@ export class MineBoardOptionsComponent {
           rows: this.optionsForm.controls.gridSize.controls.rows.value
         },
         mineCount: this.optionsForm.controls.mineCount.value
-      }
+      };
+      this.dialog.close(true);
     }
   }
 
