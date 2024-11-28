@@ -1,5 +1,6 @@
 import { MineBoardOptions } from '../mine-board-options/mine-board-options';
 import { MineBoardState } from '../mine-board-state/mine-board-state';
+import { MineBoardTimer } from '../mine-board-timer/mine-board-timer';
 import { MineBoard } from './mine-board';
 
 describe('MineBoard', () => {
@@ -8,7 +9,10 @@ describe('MineBoard', () => {
     gridSize: { rows: 10, cols: 10 },
   };
 
-  let board = new MineBoard(options);
+  let board: MineBoard;
+  beforeEach(() => {
+    board = new MineBoard(options);
+  });
 
   const getRandomCell = () => {
     const x = Math.floor(Math.random() * options.gridSize.rows),
@@ -27,9 +31,7 @@ describe('MineBoard', () => {
     return undefined;
   }
 
-  beforeEach(() => {
-    board = new MineBoard(options);
-  });
+
 
   it('should create an instance', () => {
     expect(board).toBeTruthy();
@@ -72,7 +74,7 @@ describe('MineBoard', () => {
     const cell = getRandomCell();
     await board.openCell(cell);
 
-    const mineCell = board.grid.find(_=>_.some(__=>__.isMine))!.find((_) => _.isMine)!;
+    const mineCell = board.grid.find(_ => _.some(__ => __.isMine))!.find((_) => _.isMine)!;
 
     await board.openCell(mineCell);
 
@@ -87,7 +89,7 @@ describe('MineBoard', () => {
     await board.openCell(cell);
     const AdjacentCells = board.getAdjacentCells(cell);
 
-    AdjacentCells.forEach(_=>expect(_.isOpen).toBeTrue());
+    AdjacentCells.forEach(_ => expect(_.isOpen).toBeTrue());
   });
 
   it('should not open adjacent cell if adjacent flagged mine cells count is less than adjacent mine cells count', async () => {
@@ -96,12 +98,12 @@ describe('MineBoard', () => {
     await board.openCell(cell);
     const safeCellWithAdjacentMine = getSafeCellWithAdjacentMines();
     const AdjacentCells = board.getAdjacentCells(safeCellWithAdjacentMine!);
-    const alreadyOpen = AdjacentCells.filter(_=>_.isOpen);
+    const alreadyOpen = AdjacentCells.filter(_ => _.isOpen);
 
     await board.openCell(safeCellWithAdjacentMine!);
 
     expect(safeCellWithAdjacentMine).toBeTruthy();
-    expect(alreadyOpen.length).toBe(AdjacentCells.filter(_=>_.isOpen).length);
+    expect(alreadyOpen.length).toBe(AdjacentCells.filter(_ => _.isOpen).length);
   });
 
 
@@ -123,7 +125,7 @@ describe('MineBoard', () => {
     expect(cell.isFlagged).toBeFalse();
   });
 
-  it('should not open flagged cell', async() => {
+  it('should not open flagged cell', async () => {
     const cell = getRandomCell();
 
     board.toggleFlag(cell);
@@ -134,7 +136,7 @@ describe('MineBoard', () => {
     expect(cell.isOpen).toBeFalse();
   });
 
-  it('should not initialize from a flagged cell', async() => {
+  it('should not initialize from a flagged cell', async () => {
     const cell = getRandomCell();
 
     board.toggleFlag(cell);
@@ -246,5 +248,10 @@ describe('MineBoard', () => {
     const AdjacentCells = board.getAdjacentCells(cell);
 
     expect(AdjacentCells.length).toBe(3);
+  });
+
+
+  it('should have timer', () => {
+    expect(board.timer).toBeInstanceOf(MineBoardTimer);
   });
 });

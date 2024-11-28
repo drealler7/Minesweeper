@@ -1,17 +1,31 @@
-.container{
+.container {
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  .board{
+  .header {
+    .timer{
+      padding: .8em .4em;
+      display: inline-flex;
+      align-items: center;
+      span{
+        font-weight: bolder;
+        font-size: large;
+      }
+      .material-symbols-outlined {
+        margin-right: 0.2em;
+      }
+    }
+  }
+  .board {
     flex-grow: 1;
     overflow: auto;
   }
-  .footer{
+  .footer {
     margin: 0.5em auto;
-    button:first-child{
+    button:first-child {
       margin-right: 0.5em;
     }
-    button:last-child{
+    button:last-child {
       margin-left: 0.5em;
     }
   }

@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MineBoardState } from '../mine-board-state/mine-board-state';
+import { MineBoardTimerPipe } from '../mine-board-timer/mine-board-timer.pipe';
 
 @Component({
   selector: 'app-mine-board',
@@ -18,7 +19,8 @@ import { MineBoardState } from '../mine-board-state/mine-board-state';
     CommonModule,
     MineBoardCellModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MineBoardTimerPipe
   ],
   providers: [MineBoardOptionsService]
 })

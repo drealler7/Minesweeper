@@ -1,10 +1,12 @@
 import { MineBoardCell } from '../mine-board-cell/mine-board-cell';
 import { MineBoardOptions } from '../mine-board-options/mine-board-options';
 import { MineBoardState } from '../mine-board-state/mine-board-state';
+import { MineBoardTimer } from '../mine-board-timer/mine-board-timer';
 
 export class MineBoard {
   state: MineBoardState = MineBoardState.Initial;
   grid: MineBoardCell[][];
+  readonly timer = new MineBoardTimer();
   constructor(readonly options: MineBoardOptions) {
     this.grid = MineBoard.generateGrid(options);
   }
@@ -21,7 +23,7 @@ export class MineBoard {
 
     cell.isOpen = true;
 
-    if(cell.isMine){
+    if (cell.isMine) {
       this.state = MineBoardState.gameOver;
       return;
     }
