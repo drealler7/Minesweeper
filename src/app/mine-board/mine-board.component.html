@@ -9,13 +9,13 @@
     <div class="grid">
       <div class="row" *ngFor="let cells of mineBoard.grid">
         <div class="col" *ngFor="let cell of cells">
-          <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell" [openCell]="openCell" [toggleFlag]="toggleFlag" />
+          <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell" (openCell)="openCell($event)" (toggleFlag)="toggleFlag($event)" />
         </div>
       </div>
     </div>
   </section>
   <section class="footer">
-    <button type="button" mat-fab extended aria-label="Open options dialog button" title="Open options dialog button" (click)="openOptions()">
+    <button type="button" mat-fab extended aria-label="Open options dialog button" title="Open options dialog button" (click)="openOptionsDialog()">
       <mat-icon fontSet="material-symbols-outlined">settings</mat-icon>
       <span>Settings</span>
     </button>

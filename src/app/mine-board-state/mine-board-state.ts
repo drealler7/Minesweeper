@@ -3,5 +3,6 @@ export enum MineBoardState{
   Initial,
   Initialized,
   openingCard,
-  gameOver
+  gameOver,
+  Complete
 }

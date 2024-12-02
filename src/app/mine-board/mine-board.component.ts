@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MineBoardState } from '../mine-board-state/mine-board-state';
 import { MineBoardTimerPipe } from '../mine-board-timer/mine-board-timer.pipe';
+import { MineBoardCompleteComponent } from '../mine-board-complete/mine-board-complete.component';
 
 @Component({
   selector: 'app-mine-board',
@@ -34,6 +35,9 @@ export class MineBoardComponent {
     if (this.mineBoard.state === MineBoardState.Initial || this.mineBoard.state === MineBoardState.Initialized) {
       await this.mineBoard.openCell(cell);
     }
+    if (this.mineBoard.state === MineBoardState.Complete) {
+      this.openCompleteDialog();
+    }
   }
   toggleFlag(cell: MineBoardCell) {
     if (this.mineBoard.state === MineBoardState.Initial || this.mineBoard.state === MineBoardState.Initialized) {
@@ -45,7 +49,7 @@ export class MineBoardComponent {
     this.mineBoard = this.generateMineBoard();
   }
 
-  openOptions() {
+  openOptionsDialog() {
     const dialogRef = this.dialog.open<boolean>(MineBoardOptionsComponent, {
       providers: [
         {
@@ -63,6 +67,24 @@ export class MineBoardComponent {
       }
     });
   }
+
+  private openCompleteDialog() {
+    const dialogRef = this.dialog.open(MineBoardCompleteComponent, {
+      providers: [
+        {
+          provide: MineBoard,
+          useValue: this.mineBoard
+        }
+      ],
+      width: '90%',
+      maxWidth: '350px'
+    });
+
+    dialogRef.closed.subscribe(() => {
+      this.restart();
+    });
+  }
+
 
   private generateMineBoard() {
     return new MineBoard(this.optionsService.options);

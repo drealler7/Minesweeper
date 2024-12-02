@@ -1,3 +1,4 @@
+import { MineBoardCell } from '../mine-board-cell/mine-board-cell';
 import { MineBoardOptions } from '../mine-board-options/mine-board-options';
 import { MineBoardState } from '../mine-board-state/mine-board-state';
 import { MineBoardTimer } from '../mine-board-timer/mine-board-timer';
@@ -253,5 +254,21 @@ describe('MineBoard', () => {
 
   it('should have timer', () => {
     expect(board.timer).toBeInstanceOf(MineBoardTimer);
+  });
+
+
+  it('should set state to game complete', async () => {
+    const timerSpy = spyOn(board.timer, 'stopTimer').and.callThrough();
+
+    let cell: MineBoardCell | undefined = getRandomCell();
+
+    do {
+      await board.openCell(cell);
+      cell = board.grid.find(_ => _.some(_ => !_.isOpen && !_.isMine))?.find(_ => !_.isOpen && !_.isMine);
+    }
+    while (cell);
+
+    expect(timerSpy).toHaveBeenCalled();
+    expect(board.state).toBe(MineBoardState.Complete);
   });
 });

@@ -31,9 +31,11 @@ export class MineBoard {
     await new Promise<void>(_ => setTimeout(_, 1));
     await this.openAdjacentCells(cell);
 
-    this.state = MineBoardState.Initialized;
+
+    this.checkBoardState();
 
   }
+
 
   toggleFlag(cell: MineBoardCell) {
     cell.isFlagged = !cell.isOpen && !cell.isFlagged;
@@ -50,6 +52,17 @@ export class MineBoard {
       return adjacentCells;
     }, []);
   }
+
+  private checkBoardState() {
+    if (this.grid.every(row => row.every(_ => _.isMine || _.isOpen))) {
+      this.timer.stopTimer();
+      this.state = MineBoardState.Complete;
+    }else{
+      this.state = MineBoardState.Initialized;
+    }
+  }
+
+
 
   private async openAdjacentCells(cell: MineBoardCell) {
     if (!cell.isOpen) {

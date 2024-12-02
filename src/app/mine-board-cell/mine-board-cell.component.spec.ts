@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { MineBoardCellComponent } from './mine-board-cell.component';
 import { MineBoardCellModule } from './mine-board-cell.module';
 import { MineBoardCell } from './mine-board-cell';
@@ -19,8 +18,6 @@ describe('MineBoardCellComponent', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('mineBoardCell', new MineBoardCell());
     fixture.componentRef.setInput('mineBoard', new MineBoard({ gridSize: { cols: 10, rows: 20 }, mineCount: 10 }));
-    fixture.componentRef.setInput('openCell', (cell:MineBoardCell) => Promise.resolve(expect(cell).toBe(component.mineBoardCell)));
-    fixture.componentRef.setInput('toggleFlag', (cell:MineBoardCell) => expect(cell).toBe(component.mineBoardCell));
     fixture.detectChanges();
   });
 
@@ -44,24 +41,25 @@ describe('MineBoardCellComponent', () => {
 
   it('should toggle Flag', () => {
     const event = new Event('contextmenu');
-    const componentSpy = spyOn(component, 'toggleFlag').and.callFake((cell) => expect(cell).toBe(component.mineBoardCell));
+
+    const toggleCellSpy = spyOn(component.toggleFlag, 'emit').and.callThrough();
     const eventSpy = spyOn(event, 'preventDefault').and.callFake(() => {});
 
     component.contextMenu(event);
 
-    expect(componentSpy).toHaveBeenCalled();
+    expect(toggleCellSpy).toHaveBeenCalledOnceWith(component.mineBoardCell);
     expect(eventSpy).toHaveBeenCalled();
   });
 
   it('should open cell', () => {
 
     const event = new Event('click');
-    const componentSpy = spyOn(component, 'openCell').and.callFake((cell) => Promise.resolve(expect(cell).toBe(component.mineBoardCell)));
+    const openCellSpy = spyOn(component.openCell, 'emit').and.callThrough();
     const eventSpy = spyOn(event, 'preventDefault').and.callFake(() => {});
 
     component.click(event);
 
-    expect(componentSpy).toHaveBeenCalled();
+    expect(openCellSpy).toHaveBeenCalledOnceWith(component.mineBoardCell);
     expect(eventSpy).toHaveBeenCalled();
   });
 });

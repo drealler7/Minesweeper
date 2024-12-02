@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MineBoardComponent } from './mine-board.component';
 import {Dialog } from '@angular/cdk/dialog';
 import { MineBoardState } from '../mine-board-state/mine-board-state';
+import { MineBoardCompleteComponent } from '../mine-board-complete/mine-board-complete.component';
+import { MineBoardOptionsComponent } from '../mine-board-options/mine-board-options.component';
 describe('MineBoardComponent', () => {
   let component: MineBoardComponent;
   let fixture: ComponentFixture<MineBoardComponent>;
@@ -74,8 +76,24 @@ describe('MineBoardComponent', () => {
   it('should open options dialog', () => {
     const dialogOpen = spyOn(TestBed.inject(Dialog),'open').and.callThrough();
 
-    component.openOptions();
+    component.openOptionsDialog();
 
+    expect(dialogOpen).toHaveBeenCalledTimes(1);
+  });
+
+
+  it('should open board complete dialog', async () => {
+    const cell = component.mineBoard.grid[0][0];
+    const dialogOpen = spyOn(TestBed.inject(Dialog),'open').and.callThrough();
+    const openCellSpy = spyOn(component.mineBoard, 'openCell').and.callFake((cell) => {
+      expect(cell).toBe(cell);
+      component.mineBoard.state = MineBoardState.Complete;
+      return Promise.resolve();
+    });
+
+    await component.openCell(cell);
+
+    expect(openCellSpy).toHaveBeenCalledTimes(1);
     expect(dialogOpen).toHaveBeenCalledTimes(1);
   });
 });
