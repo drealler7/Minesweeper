@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MineBoardState } from '../mine-board-state/mine-board-state';
 import { MineBoardTimerPipe } from '../mine-board-timer/mine-board-timer.pipe';
 import { MineBoardCompleteComponent } from '../mine-board-complete/mine-board-complete.component';
+import { MineBoardGameOverComponent } from '../mine-board-game-over/mine-board-game-over.component';
 
 @Component({
   selector: 'app-mine-board',
@@ -37,6 +38,8 @@ export class MineBoardComponent {
     }
     if (this.mineBoard.state === MineBoardState.Complete) {
       this.openCompleteDialog();
+    }else if(this.mineBoard.state === MineBoardState.gameOver) {
+      this.openGameOverDialog();
     }
   }
   toggleFlag(cell: MineBoardCell) {
@@ -70,6 +73,23 @@ export class MineBoardComponent {
 
   private openCompleteDialog() {
     const dialogRef = this.dialog.open(MineBoardCompleteComponent, {
+      providers: [
+        {
+          provide: MineBoard,
+          useValue: this.mineBoard
+        }
+      ],
+      width: '90%',
+      maxWidth: '350px'
+    });
+
+    dialogRef.closed.subscribe(() => {
+      this.restart();
+    });
+  }
+
+  private openGameOverDialog() {
+    const dialogRef = this.dialog.open(MineBoardGameOverComponent, {
       providers: [
         {
           provide: MineBoard,

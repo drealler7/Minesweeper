@@ -96,4 +96,19 @@ describe('MineBoardComponent', () => {
     expect(openCellSpy).toHaveBeenCalledTimes(1);
     expect(dialogOpen).toHaveBeenCalledTimes(1);
   });
+
+  it('should open game over dialog', async () => {
+    const cell = component.mineBoard.grid[0][0];
+    const dialogOpen = spyOn(TestBed.inject(Dialog),'open').and.callThrough();
+    const openCellSpy = spyOn(component.mineBoard, 'openCell').and.callFake((cell) => {
+      expect(cell).toBe(cell);
+      component.mineBoard.state = MineBoardState.gameOver;
+      return Promise.resolve();
+    });
+
+    await component.openCell(cell);
+
+    expect(openCellSpy).toHaveBeenCalledTimes(1);
+    expect(dialogOpen).toHaveBeenCalledTimes(1);
+  });
 });

@@ -24,6 +24,7 @@ export class MineBoard {
     cell.isOpen = true;
 
     if (cell.isMine) {
+      this.timer.stopTimer();
       this.state = MineBoardState.gameOver;
       return;
     }
@@ -57,7 +58,7 @@ export class MineBoard {
     if (this.grid.every(row => row.every(_ => _.isMine || _.isOpen))) {
       this.timer.stopTimer();
       this.state = MineBoardState.Complete;
-    }else{
+    } else {
       this.state = MineBoardState.Initialized;
     }
   }

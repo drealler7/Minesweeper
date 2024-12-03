@@ -40,3 +40,15 @@ $Minesweeper-theme: mat.m2-define-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.dialog-wrapper {
+  background-color: white;
+  padding: 1em;
+  border-radius: .8em;
+  h2,h5{
+    text-align: center;
+  }
+  h2{
+    margin-top: 0;
+  }
+}

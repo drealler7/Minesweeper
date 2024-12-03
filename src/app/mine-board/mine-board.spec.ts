@@ -74,12 +74,14 @@ describe('MineBoard', () => {
   it('should have game over state if a mine is opened', async () => {
     const cell = getRandomCell();
     await board.openCell(cell);
+    const timerSpy = spyOn(board.timer, 'stopTimer').and.callThrough();
 
     const mineCell = board.grid.find(_ => _.some(__ => __.isMine))!.find((_) => _.isMine)!;
 
     await board.openCell(mineCell);
 
     expect(board.state).toBe(MineBoardState.gameOver);
+    expect(timerSpy).toHaveBeenCalled();
   });
 
 
