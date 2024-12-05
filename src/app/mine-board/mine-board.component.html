@@ -7,8 +7,8 @@
   </section>
   <section class="board">
     <div class="grid">
-      <div class="row" *ngFor="let cells of mineBoard.grid">
-        <div class="col" *ngFor="let cell of cells">
+      <div class="row" *ngFor="let rows of mineBoard.cells | mineBoardRow">
+        <div class="col" *ngFor="let cell of rows">
           <app-mine-board-cell [mineBoard]="mineBoard" [mineBoardCell]="cell" (openCell)="openCell($event)" (toggleFlag)="toggleFlag($event)" />
         </div>
       </div>
@@ -25,4 +25,3 @@
     </button>
   </section>
 </div>
-

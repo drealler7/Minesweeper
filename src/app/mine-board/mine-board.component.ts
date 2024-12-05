@@ -8,10 +8,10 @@ import { MineBoardCellModule } from '../mine-board-cell/mine-board-cell.module';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MineBoardState } from '../mine-board-state/mine-board-state';
 import { MineBoardTimerPipe } from '../mine-board-timer/mine-board-timer.pipe';
 import { MineBoardCompleteComponent } from '../mine-board-complete/mine-board-complete.component';
 import { MineBoardGameOverComponent } from '../mine-board-game-over/mine-board-game-over.component';
+import { MineBoardRowPipe } from '../mine-board-row/mine-board-row.pipe';
 
 @Component({
   selector: 'app-mine-board',
@@ -22,7 +22,8 @@ import { MineBoardGameOverComponent } from '../mine-board-game-over/mine-board-g
     MineBoardCellModule,
     MatButtonModule,
     MatIconModule,
-    MineBoardTimerPipe
+    MineBoardTimerPipe,
+    MineBoardRowPipe
   ],
   providers: [MineBoardOptionsService]
 })
@@ -33,17 +34,15 @@ export class MineBoardComponent {
   mineBoard = this.generateMineBoard();
 
   async openCell(cell: MineBoardCell) {
-    if (this.mineBoard.state === MineBoardState.Initial || this.mineBoard.state === MineBoardState.Initialized) {
-      await this.mineBoard.openCell(cell);
-    }
-    if (this.mineBoard.state === MineBoardState.Complete) {
+    await this.mineBoard.openCell(cell);
+    if(this.mineBoard.isComplete()){
       this.openCompleteDialog();
-    }else if(this.mineBoard.state === MineBoardState.gameOver) {
+    } else if (this.mineBoard.isGameOver()) {
       this.openGameOverDialog();
     }
   }
   toggleFlag(cell: MineBoardCell) {
-    if (this.mineBoard.state === MineBoardState.Initial || this.mineBoard.state === MineBoardState.Initialized) {
+    if (!this.mineBoard.isGameOver() && !this.mineBoard.isComplete()) {
       this.mineBoard.toggleFlag(cell);
     }
   }

@@ -16,7 +16,7 @@ describe('MineBoardCellComponent', () => {
 
     fixture = TestBed.createComponent(MineBoardCellComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('mineBoardCell', new MineBoardCell());
+    fixture.componentRef.setInput('mineBoardCell', new MineBoardCell(0,0));
     fixture.componentRef.setInput('mineBoard', new MineBoard({ gridSize: { cols: 10, rows: 20 }, mineCount: 10 }));
     fixture.detectChanges();
   });
@@ -27,7 +27,7 @@ describe('MineBoardCellComponent', () => {
 
   it('should be able to set a mine board cell', () => {
 
-    component.mineBoardCell = new MineBoardCell();
+    component.mineBoardCell = new MineBoardCell(0,0);
 
     expect(component.mineBoardCell).toBeTruthy();
   });

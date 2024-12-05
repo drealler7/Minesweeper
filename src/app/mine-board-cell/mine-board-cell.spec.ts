@@ -1,9 +1,9 @@
 import { MineBoardCell } from './mine-board-cell';
 
 describe('MineBoardCell', () => {
-  let cell = new MineBoardCell();
+  let cell:MineBoardCell;
   beforeEach(()=>{
-    cell = new MineBoardCell();
+    cell = new MineBoardCell(0,0);
   })
   it('should create an instance', () => {
     expect(cell).toBeTruthy();

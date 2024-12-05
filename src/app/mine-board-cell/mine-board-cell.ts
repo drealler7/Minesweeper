@@ -1,5 +1,6 @@
 export class MineBoardCell {
-  isFlagged: boolean = false;
-  isMine: boolean = false;
-  isOpen: boolean = false;
+  isFlagged = false;
+  isMine = false;
+  isOpen = false;
+  constructor(readonly row: number, readonly col: number) { }
 }

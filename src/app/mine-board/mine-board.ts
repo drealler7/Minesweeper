@@ -1,40 +1,36 @@
 import { MineBoardCell } from '../mine-board-cell/mine-board-cell';
 import { MineBoardOptions } from '../mine-board-options/mine-board-options';
-import { MineBoardState } from '../mine-board-state/mine-board-state';
 import { MineBoardTimer } from '../mine-board-timer/mine-board-timer';
 
 export class MineBoard {
-  state: MineBoardState = MineBoardState.Initial;
-  grid: MineBoardCell[][];
+  cells: MineBoardCell[];
   readonly timer = new MineBoardTimer();
   constructor(readonly options: MineBoardOptions) {
-    this.grid = MineBoard.generateGrid(options);
+    this.cells = MineBoard.generateGrid(options);
   }
 
-  async openCell(cell: MineBoardCell) {
-    if (this.state === MineBoardState.gameOver || cell.isFlagged) {
+  async openCell(cell: MineBoardCell): Promise<void> {
+    if (this.isGameOver() || this.isComplete() || cell.isFlagged) {
       return;
-    } else if (this.state === MineBoardState.Initial) {
+    }
+
+    if (this.cells.every(_ => !_.isMine)) {
       this.initializeMineCells(cell);
     }
-    if (this.state !== MineBoardState.openingCard) {
-      this.state = MineBoardState.openingCard;
-    }
+
 
     cell.isOpen = true;
-
     if (cell.isMine) {
       this.timer.stopTimer();
-      this.state = MineBoardState.gameOver;
       return;
     }
 
     await new Promise<void>(_ => setTimeout(_, 1));
     await this.openAdjacentCells(cell);
 
-
-    this.checkBoardState();
-
+    if(this.isComplete()){
+      this.timer.stopTimer();
+    }
   }
 
 
@@ -43,24 +39,18 @@ export class MineBoard {
   }
 
   getAdjacentCells(cell: MineBoardCell): MineBoardCell[] {
-    const cellRowIndex = this.grid.findIndex(_ => _.includes(cell));
-    const cellColIndex = this.grid[cellRowIndex].indexOf(cell);
-
-    return this.grid.reduce((adjacentCells, row, rowIndex) => {
-      if (Math.abs(cellRowIndex - rowIndex) <= 1) {
-        adjacentCells.push(...row.filter((_, colIndex) => _ !== cell && Math.abs(cellColIndex - colIndex) <= 1));
-      }
-      return adjacentCells;
-    }, []);
+    return this.cells.filter(_ =>
+      _ !== cell &&
+      Math.abs(_.row - cell.row) <= 1 &&
+      Math.abs(_.col - cell.col) <= 1
+    );
   }
 
-  private checkBoardState() {
-    if (this.grid.every(row => row.every(_ => _.isMine || _.isOpen))) {
-      this.timer.stopTimer();
-      this.state = MineBoardState.Complete;
-    } else {
-      this.state = MineBoardState.Initialized;
-    }
+  isGameOver(): boolean {
+    return this.cells.some(_ => _.isMine && _.isOpen);
+  }
+  isComplete(): boolean {
+    return this.cells.every(_ => _.isOpen && !_.isMine || !_.isOpen && _.isMine);
   }
 
 
@@ -73,39 +63,31 @@ export class MineBoard {
     const adjacentCells = this.getAdjacentCells(cell);
 
     if (adjacentCells.filter(_ => _.isMine).length == adjacentCells.filter(_ => _.isFlagged).length) {
-      await Promise.all(adjacentCells.filter(_ => !_.isOpen).map(_ => this.openCell(_)));
+      await Promise.all(adjacentCells.filter(_ => !_.isOpen &&  !_.isFlagged).map(_ => this.openCell(_)));
     }
 
   }
 
-  private initializeMineCells(cell: MineBoardCell): true {
+  private initializeMineCells(cell: MineBoardCell) {
 
-    const cellRowIndex = this.grid.findIndex(_ => _.includes(cell));
-    const cellColIndex = this.grid[cellRowIndex].indexOf(cell);
+    const adjacentCells = this.getAdjacentCells(cell);
 
-    const getMineCells = () => this.grid.reduce((all, row, rowIndex) => all.concat(...row.filter((col, colIndex) => col.isMine && (Math.abs(rowIndex - cellRowIndex) > 1 || Math.abs(colIndex - cellColIndex) > 1))), []);
-    const getSafeCells = () => this.grid.reduce((all, row, rowIndex) => all.concat(...row.filter((col, colIndex) => !col.isMine && (Math.abs(rowIndex - cellRowIndex) > 1 || Math.abs(colIndex - cellColIndex) > 1))), []);
-    let mineCells = getMineCells();
-    let safeCells = getSafeCells();
+    const otherCells = this.cells.filter(_ => _ !== cell && !adjacentCells.includes(_));
 
-    while (mineCells.length < this.options.mineCount && safeCells.length > 0) {
-      let randomIndex = Math.floor(Math.random() * safeCells.length);
-      safeCells[randomIndex].isMine = true;
-      mineCells = getMineCells();
-      safeCells = getSafeCells();
+    for (let i = 0; i < this.options.mineCount && otherCells.length; i++) {
+      let randomIndex = Math.floor(Math.random() * otherCells.length);
+      otherCells[randomIndex].isMine = true;
+      otherCells.splice(randomIndex, 1);
     }
-    return true;
   }
 
   private static generateGrid(options: MineBoardOptions) {
-    const grid: MineBoardCell[][] = [];
-    for (let rIndex = 0; rIndex < options.gridSize.rows; rIndex++) {
-      const row: MineBoardCell[] = [];
-      for (let cIndex = 0; cIndex < options.gridSize.cols; cIndex++) {
-        row.push(new MineBoardCell());
+    const cells: MineBoardCell[] = [];
+    for (let row = 0; row < options.gridSize.rows; row++) {
+      for (let col = 0; col < options.gridSize.cols; col++) {
+        cells.push(new MineBoardCell(row, col));
       }
-      grid.push(row);
     }
-    return grid;
+    return cells;
   }
 }

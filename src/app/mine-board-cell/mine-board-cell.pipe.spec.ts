@@ -9,7 +9,7 @@ describe('MineBoardCellPipe', () => {
     mineBoard = new MineBoard({ gridSize: { cols: 10, rows: 20 }, mineCount: 10 });
   });
   it('should return empty string if adjacent are not mines', () => {
-    const cell = mineBoard.grid[Math.floor(Math.random() * mineBoard.options.gridSize.rows)][Math.floor(Math.random() * mineBoard.options.gridSize.cols)];
+    const cell = mineBoard.cells[0];
     const adjacentCells = mineBoard.getAdjacentCells(cell)
     adjacentCells.forEach(_ => _.isMine = false);
 
@@ -19,15 +19,15 @@ describe('MineBoardCellPipe', () => {
   });
 
   it('should return empty string if mineBoard is undefined', () => {
-    const cell = mineBoard.grid[Math.floor(Math.random() * mineBoard.options.gridSize.rows)][Math.floor(Math.random() * mineBoard.options.gridSize.cols)];
+    const cell = mineBoard.cells[0];
 
-    const transformed = pipe.transform(cell,undefined);
+    const transformed = pipe.transform(cell);
 
     expect(transformed).toBe('');
   });
 
   it('should return number of mine adjacent cells', () => {
-    const cell = mineBoard.grid[Math.floor(Math.random() * mineBoard.options.gridSize.rows)][Math.floor(Math.random() * mineBoard.options.gridSize.cols)];
+    const cell = mineBoard.cells[0];
     const adjacentCells = mineBoard.getAdjacentCells(cell)
     adjacentCells.forEach(_ => _.isMine = true);
 
