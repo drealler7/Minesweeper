@@ -64,7 +64,7 @@ describe('MineBoardComponent', () => {
     const cell = component.mineBoard.cells[0];
     const dialogOpen = spyOn(TestBed.inject(Dialog),'open').and.callThrough();
     const openCellSpy = spyOn(component.mineBoard, 'openCell').and.returnValue(Promise.resolve());
-    const isCompleteSpy = spyOn(component.mineBoard, 'isComplete').and.returnValue(false);
+    const isCompleteSpy = spyOn(component.mineBoard, 'isComplete').and.returnValue(true);
 
     await component.openCell(cell);
 
