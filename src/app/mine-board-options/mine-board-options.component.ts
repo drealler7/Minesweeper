@@ -34,13 +34,13 @@ export class MineBoardOptionsComponent {
 
   save() {
     if (this.optionsForm.valid) {
-      this.service.options = {
+      this.service.saveOptions({
         gridSize: {
           cols: this.optionsForm.controls.gridSize.controls.cols.value,
           rows: this.optionsForm.controls.gridSize.controls.rows.value
         },
         mineCount: this.optionsForm.controls.mineCount.value
-      };
+      });
       this.dialog.close(true);
     }
   }

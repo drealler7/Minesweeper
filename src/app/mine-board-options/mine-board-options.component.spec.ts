@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { MineBoardOptionsService } from './mine-board-options.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { DialogRef } from '@angular/cdk/dialog';
+import { MineBoardOptions } from './mine-board-options';
 
 describe('MineBoardOptionsComponent', () => {
   let component: MineBoardOptionsComponent;
@@ -37,20 +38,25 @@ describe('MineBoardOptionsComponent', () => {
   it('should not save invalid form', () => {
     component.optionsForm.controls.mineCount.setValue(0);
     const dialogSpy = spyOn(dialogRef,'close').and.callThrough();
+    const serviceSpy = spyOn(TestBed.inject(MineBoardOptionsService),'saveOptions').and.returnValue();
 
     component.save();
 
     expect(dialogSpy).not.toHaveBeenCalled();
+    expect(serviceSpy).not.toHaveBeenCalled();
     expect(TestBed.inject(MineBoardOptionsService).options.mineCount).not.toBe(0);
   });
 
   it('should save valid form', () => {
     component.optionsForm.controls.mineCount.setValue(10);
     const dialogSpy = spyOn(dialogRef,'close').and.callThrough();
+    const serviceSpy = spyOn(TestBed.inject(MineBoardOptionsService),'saveOptions').and.callFake((options:MineBoardOptions) =>{
+      expect(options.mineCount).toBe(10);
+    });
 
     component.save();
 
     expect(dialogSpy).toHaveBeenCalled();
-    expect(TestBed.inject(MineBoardOptionsService).options.mineCount).toBe(10);
+    expect(serviceSpy).toHaveBeenCalled();
   });
 });
