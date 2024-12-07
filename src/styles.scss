@@ -1,20 +1,60 @@
 
+
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
-
+:root {
+  --deep-navy-blue: #0b1e4f;
+  --olive-green: #697911;
+}
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat.elevation-classes();
 @include mat.app-background();
+$minesweeper-palette: (
+    50: #e6eaf3,
+    100: #ccd5e6,
+    200: #99aacd,
+    300: #667fc7,
+    400: #4c5da5,
+    500: #0b1e4f,
+    600: #09183e,
+    700: #070e2a,
+    800: #040617,
+    900: #02030b,
+    A100: #a6c3ff,
+    A200: #82aaff,
+    A400: #538dff,
+    A700: #0d55ff,
+    contrast: (
+        50: #f1f4e2,
+        100: #dde4b5,
+        200: #c7d38a,
+        300: #b0c160,
+        400: 	#9bb33d,
+        500: #697911,
+        600: #5a680f,
+        700: #4a580c,
+        800: #3a480a,
+        900: #2a3807,
+        A100: #e0f7a6,
+        A200: #c3eb6f,
+        A400: #a5dd39,
+        A700: #86cf00,
+    )
+);
+
+
+
+
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$Minesweeper-primary: mat.m2-define-palette(mat.$m2-indigo-palette);
-$Minesweeper-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+$Minesweeper-primary: mat.m2-define-palette($minesweeper-palette);
+$Minesweeper-accent: mat.m2-define-palette($minesweeper-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $Minesweeper-warn: mat.m2-define-palette(mat.$m2-red-palette);

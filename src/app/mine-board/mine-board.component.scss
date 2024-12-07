@@ -22,6 +22,10 @@
   }
   .footer {
     margin: 0.5em auto;
+    button{
+      color: white;
+      background-color: var(--deep-navy-blue);
+    }
     button:first-child {
       margin-right: 0.5em;
     }

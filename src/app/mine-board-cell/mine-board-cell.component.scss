@@ -1,25 +1,36 @@
 .mine-board-cell {
   aspect-ratio: 1;
-  background-color: red;
   margin: 0.1em;
   display: flex;
   align-items: center;
   justify-content: center;
-  mat-icon{
+  mat-icon {
     width: 100%;
     height: fit-content;
-    font-size: 10vw;
+    font-size: 15vw;
     text-align: center;
   }
 }
-button{
+button {
   width: 100%;
   aspect-ratio: 1;
   height: unset;
-  &:not(.open){
-    background-color: red;
+  mat-icon {
+    font-size: 3em;
+    width: 100%;
+    height: fit-content;
   }
-  &.open{
+  &:not(.open) {
+    background-color: var(--deep-navy-blue);
+    mat-icon {
+      color: var(--olive-green);
+    }
+  }
+  &.open {
     background-color: transparent;
+    mat-icon,
+    .adjcent-cell-count {
+      color: var(--deep-navy-blue);
+    }
   }
 }
